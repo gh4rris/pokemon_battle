@@ -26,4 +26,3 @@ class TextActionFrame(ctk.CTkFrame):
         self.grid_columnconfigure(0, weight=3, uniform="a")
         self.grid_columnconfigure((1, 2), weight=1, uniform="a")
         self.grid_rowconfigure((0, 1), weight=1, uniform="a")
-        ctk.CTkLabel(self, text="Fight", fg_color="red").grid(row=0, column=1, sticky="nsew", padx=20)
