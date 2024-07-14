@@ -3,6 +3,7 @@ class Trainer():
         self.name = name
         self.party = party
         self.out = None
+        self.battle = None
 
 
 class Opponent():
@@ -10,3 +11,4 @@ class Opponent():
         self.name = name
         self.party = party
         self.out = None
+        self.battle = None
