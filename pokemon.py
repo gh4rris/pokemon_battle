@@ -16,11 +16,9 @@ class Pokemon():
         if rng <= move.accuracy:
             foe.hp -= move.attack
             if foe.hp > 0:
-                # foe.trainer.health_bar.change_hp()
-                return [(f"{self.name} used {move.name}", "S-Next", lambda: foe.trainer.health_bar.change_hp())]
+                return (f"{self.name} used {move.name}", "S-Next", lambda: foe.trainer.health_bar.change_hp())
             foe.hp = 0
             self.fainted = True
-            # foe.trainer.health_bar.change_hp()
-            return [(f"{self.name} used {move.name}", "S-Next", lambda: foe.trainer.health_bar.change_hp())]
+            return (f"{self.name} used {move.name}", "S-Next", lambda: foe.trainer.health_bar.change_hp())
         else:
-            return [(f"{self.name}'s attack missed!", "S-Next")]
+            return (f"{self.name}'s attack missed!", "S-Next")

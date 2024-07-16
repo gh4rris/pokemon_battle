@@ -21,33 +21,25 @@ class Fight(ctk.CTkFrame):
         attack_4.pack(expand=True, fill="both", padx=2, pady=2)
         self.place(relx=0.2, rely=0, relwidth=0.2, relheight=1)
         
-
-    def attack(self, pokemon, move, foe):
+    def determine_turn(self, move):
         self.place_forget()
         self.battle.next_button.configure(text="Next", anchor="se", state="disabled", command=lambda: self.battle.progress_text())
-        self.battle.next_text = pokemon.attack(move, foe)
-        pokemon.trainer.turn = True
-        self.battle.progress_text()
-        # self.battle.next_text = foe.attack(foe_move, pokemon)
-        
-        # self.battle.next_text = self.opponent_pokemon.attack(opponent_move, self.pokemon)
-        # self.opponent_pokemon.trainer.turn = True
-        # self.battle.progress_text()
-
-    def determine_turn(self, move):
         opponent_move = random.choice(self.opponent_pokemon.moves)
+        self.battle.next_text = []
         if self.player_pokemon.speed >= self.opponent_pokemon.speed and self.player_pokemon.trainer.turn == False:
-            self.attack(self.player_pokemon, move, self.opponent_pokemon)
+            self.battle.next_text.append(self.player_pokemon.attack(move, self.opponent_pokemon))
             self.player_pokemon.trainer.turn = True
+            self.battle.next_text.append(self.opponent_pokemon.attack(opponent_move, self.player_pokemon))
+            self.opponent_pokemon.trainer.turn = True
+            self.battle.next_text.append((f"What will {self.player_pokemon.trainer.name} do?", "S-End"))
+            self.battle.progress_text()
         elif self.player_pokemon.speed < self.opponent_pokemon.speed and self.opponent_pokemon.trainer.turn == False:
-            self.attack(self.opponent_pokemon, opponent_move, self.player_pokemon)
+            self.battle.next_text.append(self.opponent_pokemon.attack(opponent_move, self.player_pokemon))
             self.opponent_pokemon.trainer.turn = True
-        elif self.player_pokemon.trainer.turn == False:
-            self.attack(self.player_pokemon, move, self.opponent_pokemon)
+            self.battle.next_text.append(self.player_pokemon.attack(move, self.opponent_pokemon))
             self.player_pokemon.trainer.turn = True
-        else:
-            self.attack(self.opponent_pokemon, opponent_move, self.player_pokemon)
-            self.opponent_pokemon.trainer.turn = True
+            self.battle.next_text.append((f"What will {self.player_pokemon.trainer.name} do?", "S-End"))
+            self.battle.progress_text()
 
     def back(self):
         self.place_forget()

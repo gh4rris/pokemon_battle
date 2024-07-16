@@ -37,7 +37,6 @@ class Battle(ctk.CTkLabel):
         self.next_text = [(f"\n{opponent.name} sent out {opponent.party[0].name}.", "Next", lambda: self.send_pokemon_out(opponent, opponent.party[0])), 
                           (f"\nGo {player.party[0].name}!", "Next", lambda: self.send_pokemon_out(player, player.party[0])), 
                           (f"What will {player.name} do?", "S-End")]
-        # self.next_button.configure(state="normal")
 
     def send_pokemon_out(self, trainer, pokemon):
         trainer.out = pokemon
@@ -59,7 +58,7 @@ class Battle(ctk.CTkLabel):
             self.next_button.configure(state="normal")
         else:   
             self.switch_button_state()
-        if self.player.turn == True and self.opponent.turn == True:
+        if self.player.turn == True and self.opponent.turn == True and len(self.next_text) == 1:
             self.player.turn = False
             self.opponent.turn = False
 
