@@ -1,29 +1,40 @@
 from layout import Window
 from pokemon import Pokemon
-from trainers import Trainer, Opponent
+from trainers import Player, Opponent
 from moves import Moves
 
 def main():
+    # Trainers
+    player = Player("Red", [])
+    opponent = Opponent("Blue", [])
+
+
     # Moves
-    fire_blast = Moves("Fire Blast", 120, 85, 5)
     razor_leaf = Moves("Razor Leaf", 55, 95, 25)
-    solarbeam = Moves("Solarbeam", 120, 100, 10)
-    mega_drain = Moves("Mega Drain", 40, 100, 15)
     vine_whip = Moves("Vine Whip", 35, 100, 10)
+    mega_drain = Moves("Mega Drain", 40, 100, 15)
+    solarbeam = Moves("Solarbeam", 120, 100, 10)
 
+    slash = Moves("Slash", 70, 100, 20)
+    fire_spin = Moves("Fire Spin", 35, 85, 15)
+    rage = Moves("Rage", 20, 100, 20)
+    fire_blast = Moves("Fire Blast", 120, 85, 5)
+    
 
-    # Pokemon
-    # Trainer Party
-    venasaur = Pokemon("Venasaur", 3.17, 65, [razor_leaf, vine_whip, mega_drain, solarbeam])
+        # Pokemon
+    # Player Party
+    venasaur = Pokemon("Venasaur", 3.17, 2.12, 65, [razor_leaf, vine_whip, mega_drain, solarbeam], player)
+    player_party = [venasaur]
+    for member in player_party:
+        player.party.append(member)
 
     # Opponent Party
-    charizard = Pokemon("Charizard", 3.13, 65, [fire_blast])
+    charizard = Pokemon("Charizard", 3.13, 2.52, 65, [slash, fire_spin, rage, fire_blast], opponent)
+    opponent_party = [charizard]
+    for member in opponent_party:
+        opponent.party.append(member)
+    
 
-
-    # Trainers
-    trainer = Trainer("Red", [venasaur])
-    opponent = Opponent("Blue", [charizard])
-
-    main_window = Window("Pokemon Battle", (750, 450), trainer, opponent)
+    main_window = Window("Pokemon Battle", (750, 450), player, opponent)
 
 main()
