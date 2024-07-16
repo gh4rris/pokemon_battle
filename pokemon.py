@@ -13,12 +13,17 @@ class Pokemon():
 
     def attack(self, move, foe):
         rng = random.randint(1, 100)
+        text = [(f"{self.name} used {move.name}", "S-Next")]
+        self.trainer.turn = True
         if rng <= move.accuracy:
+            text[0] = text[0] + (lambda: foe.trainer.health_bar.change_hp(),)
             foe.hp -= move.attack
             if foe.hp > 0:
-                return (f"{self.name} used {move.name}", "S-Next", lambda: foe.trainer.health_bar.change_hp())
+                return text
             foe.hp = 0
             self.fainted = True
-            return (f"{self.name} used {move.name}", "S-Next", lambda: foe.trainer.health_bar.change_hp())
+            text.append((f"\n{foe.name} fainted!", "End"))
+            return text
         else:
-            return (f"{self.name}'s attack missed!", "S-Next")
+            text.append((f"\n{self.name}'s attack missed!", "Next"))
+            return text

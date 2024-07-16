@@ -1,6 +1,6 @@
 import customtkinter as ctk
 import time
-from action import Fight
+from action import Fight, ChangePokemon
 
 class Battle(ctk.CTkLabel):
     def __init__(self, frame, window, player, opponent):
@@ -19,7 +19,7 @@ class Battle(ctk.CTkLabel):
 
         # Widgets
         self.fight_button = ctk.CTkButton(self.frame, text="Fight", state="disabled", command=lambda: Fight(self.frame, self, player.out, opponent.out))
-        self.change_pokemon_button = ctk.CTkButton(self.frame, text="Change Pokemon", state="disabled")
+        self.change_pokemon_button = ctk.CTkButton(self.frame, text="Change Pokemon", state="disabled", command=lambda: ChangePokemon(self.window, self, player))
         self.item_button = ctk.CTkButton(self.frame, text="Item", state="disabled")
         self.run_button = ctk.CTkButton(self.frame, text="Run", state="disabled")
         self.next_text = None

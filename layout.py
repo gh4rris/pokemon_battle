@@ -39,16 +39,18 @@ class PlayerHealthBar(ctk.CTkFrame):
         self.player = player
         self.health_var = ctk.DoubleVar()
         self.health_bar = ctk.CTkProgressBar(self, height=20, variable=self.health_var)
+        self.name_label = ctk.CTkLabel(self)
+        self.health_label = ctk.CTkLabel(self)
         player.health_bar = self
         
 
     def place_widgets(self):
-        name_label = ctk.CTkLabel(self, text=self.player.out.name)
-        health_label = ctk.CTkLabel(self, text=f"{self.player.out.hp} / {self.player.out.max_hp}")
-        name_label.grid(row=0)
-        self.health_bar.set(self.player.out.hp)
+        self.name_label.configure(text=self.player.out.name)
+        self.health_label.configure(text=f"{self.player.out.hp} / {self.player.out.max_hp}")
+        self.name_label.grid(row=0)
+        self.health_var.set(round(self.player.out.hp / self.player.out.max_hp, 2))
         self.health_bar.grid(row=1, sticky="we", padx=20)
-        health_label.grid(row=2)
+        self.health_label.grid(row=2)
         self.place(relx=0.6, rely=0.325, relwidth=0.4, relheight=0.325)
 
     def change_hp(self):

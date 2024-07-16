@@ -19,12 +19,18 @@ def main():
     fire_spin = Moves("Fire Spin", 35, 85, 15)
     rage = Moves("Rage", 20, 100, 20)
     fire_blast = Moves("Fire Blast", 120, 85, 5)
+
+    thunder_shock = Moves("Thunder Shock", 40, 100, 30)
+    swift = Moves("Swift", 60, 100, 20)
+    body_slam = Moves("Body Slam", 85, 100, 15)
+    thunder = Moves("Thunder", 120, 70, 10)
     
 
         # Pokemon
     # Player Party
-    venasaur = Pokemon("Venasaur", 3.17, 2.12, 65, [razor_leaf, vine_whip, mega_drain, solarbeam], player)
-    player_party = [venasaur]
+    venasaur = Pokemon("Venasauar", 3.17, 2.12, 65, [razor_leaf, vine_whip, mega_drain, solarbeam], player)
+    raichu = Pokemon("Raichu", 2.77, 2.52, 62, [thunder_shock, swift, body_slam, thunder], player)
+    player_party = [venasaur, raichu]
     for member in player_party:
         player.party.append(member)
 
