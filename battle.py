@@ -1,4 +1,5 @@
 import customtkinter as ctk
+import random
 import time
 from action import Fight, ChangePokemon
 
@@ -61,6 +62,9 @@ class Battle(ctk.CTkLabel):
         if self.player.turn == True and self.opponent.turn == True and len(self.next_text) == 1:
             self.player.turn = False
             self.opponent.turn = False
+        elif self.player.turn == True and self.opponent.turn == False and len(self.next_text) == 1:
+            opponent_move = random.choice(self.opponent.out.moves)
+            self.next_text = self.opponent.out.attack(opponent_move, self.player.out) + [(f"What will {self.player.name} do?", "S-End")]
 
     def animate_text(self, line):
         current_text = self.string_var.get()

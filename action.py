@@ -53,11 +53,12 @@ class ChangePokemon(ctk.CTkFrame):
         pokemon_1.pack()
         pokemon_2.pack()
 
-    def selected_pokemon(self, pokemon):
+    def selected_pokemon(self, player_pokemon):
         self.battle.switch_button_state()
         self.pack_forget()
-        if pokemon != self.player.out:
-            self.player.change_pokemon(pokemon)
+        if player_pokemon != self.player.out:
+            self.player.change_pokemon(player_pokemon)
+            player_pokemon.trainer.turn = True
         else:
             self.battle.next_text = [(f"What will {self.player.name} do?", "S-End")]
             self.battle.progress_text()
