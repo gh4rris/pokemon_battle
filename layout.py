@@ -37,18 +37,20 @@ class PlayerHealthBar(ctk.CTkFrame):
         self.grid_rowconfigure((0, 1, 2), weight=1, uniform="a")
         self.grid_columnconfigure(0, weight=1, uniform="a")
         self.player = player
-        self.health_var = ctk.DoubleVar()
-        self.health_bar = ctk.CTkProgressBar(self, height=20, variable=self.health_var)
-        self.name_label = ctk.CTkLabel(self)
-        self.health_label = ctk.CTkLabel(self)
+        self.health_bar_var = ctk.DoubleVar()
+        self.name_label_var = ctk.StringVar()
+        self.health_label_var = ctk.StringVar()
+        self.health_bar = ctk.CTkProgressBar(self, height=20, variable=self.health_bar_var)
+        self.name_label = ctk.CTkLabel(self, textvariable=self.name_label_var)
+        self.health_label = ctk.CTkLabel(self, textvariable=self.health_label_var)
         player.health_bar = self
         
 
     def place_widgets(self):
-        self.name_label.configure(text=self.player.out.name)
-        self.health_label.configure(text=f"{self.player.out.hp} / {self.player.out.max_hp}")
+        self.name_label_var.set(self.player.out.name)
+        self.health_label_var.set(f"{self.player.out.hp} / {self.player.out.max_hp}")
+        self.health_bar_var.set(round(self.player.out.hp / self.player.out.max_hp, 2))
         self.name_label.grid(row=0)
-        self.health_var.set(round(self.player.out.hp / self.player.out.max_hp, 2))
         self.health_bar.grid(row=1, sticky="we", padx=20)
         self.health_label.grid(row=2)
         self.place(relx=0.6, rely=0.325, relwidth=0.4, relheight=0.325)
@@ -58,18 +60,30 @@ class PlayerHealthBar(ctk.CTkFrame):
             new_hp = round(self.player.out.hp / self.player.out.max_hp, 2)
         else:
             new_hp = 0
-        self.animate_hp(new_hp)
+        self.animate_hp_bar(new_hp)
+        self.animate_hp_text(self.player.out.hp)
 
-    def animate_hp(self, new_hp):
-        current_hp = self.health_var.get()
+    def animate_hp_bar(self, new_hp):
+        current_hp = self.health_bar_var.get()
         if current_hp < new_hp:
             new_value = min(current_hp + 0.01, new_hp)
-            self.health_var.set(new_value)
-            self.after(20, self.animate_hp, new_hp)
+            self.health_bar_var.set(new_value)
+            self.after(30, self.animate_hp_bar, new_hp)
         elif current_hp > new_hp:
             new_value = max(current_hp - 0.01, new_hp)
-            self.health_var.set(new_value)
-            self.after(20, self.animate_hp, new_hp)
+            self.health_bar_var.set(new_value)
+            self.after(30, self.animate_hp_bar, new_hp)
+    
+    def animate_hp_text(self, new_hp):
+        current_hp = int(self.health_label_var.get().split("/")[0])
+        if current_hp < new_hp:
+            new_value = min(current_hp + 1, new_hp)
+            self.health_label_var.set(f"{new_value} / {self.player.out.max_hp}")
+            self.after(20, self.animate_hp_text, new_hp)
+        elif current_hp > new_hp:
+            new_value = max(current_hp - 1, new_hp)
+            self.health_label_var.set(f"{new_value} / {self.player.out.max_hp}")
+            self.after(20, self.animate_hp_text, new_hp)
 
 
 class OpponentHealthBar(ctk.CTkFrame):
@@ -78,18 +92,22 @@ class OpponentHealthBar(ctk.CTkFrame):
         self.grid_rowconfigure((0, 1, 2), weight=1, uniform="a")
         self.grid_columnconfigure(0, weight=1, uniform="a")
         self.opponent = opponent
-        self.health_var = ctk.DoubleVar()
-        self.health_bar = ctk.CTkProgressBar(self, height=20, variable=self.health_var)
+        self.health_bar_var = ctk.DoubleVar()
+        self.name_label_var = ctk.StringVar()
+        self.health_label_var = ctk.StringVar()
+        self.health_bar = ctk.CTkProgressBar(self, height=20, variable=self.health_bar_var)
+        self.name_label = ctk.CTkLabel(self, textvariable=self.name_label_var)
+        self.health_label = ctk.CTkLabel(self, textvariable=self.health_label_var)
         opponent.health_bar = self
         
 
     def place_widgets(self):
-        name_label = ctk.CTkLabel(self, text=self.opponent.out.name)
-        health_label = ctk.CTkLabel(self, text=f"{self.opponent.out.hp} / {self.opponent.out.max_hp}")
-        name_label.grid(row=0)
+        self.name_label_var.set(self.opponent.out.name)
+        self.health_label_var.set(f"{self.opponent.out.hp} / {self.opponent.out.max_hp}")
+        self.name_label.grid(row=0)
         self.health_bar.set(self.opponent.out.hp / self.opponent.out.max_hp)
         self.health_bar.grid(row=1, sticky="we", padx=20)
-        health_label.grid(row=2)
+        self.health_label.grid(row=2)
         self.place(relx=0, rely=0, relwidth=0.4, relheight=0.325)
 
     def change_hp(self):
@@ -98,14 +116,26 @@ class OpponentHealthBar(ctk.CTkFrame):
         else:
             new_hp = 0
         self.animate_hp(new_hp)
+        self.animate_hp_text(self.opponent.out.hp)
 
     def animate_hp(self, new_hp):
-        current_hp = self.health_var.get()
+        current_hp = self.health_bar_var.get()
         if current_hp < new_hp:
             new_value = min(current_hp + 0.01, new_hp)
-            self.health_var.set(new_value)
-            self.after(20, self.animate_hp, new_hp)
+            self.health_bar_var.set(new_value)
+            self.after(30, self.animate_hp, new_hp)
         elif current_hp > new_hp:
             new_value = max(current_hp - 0.01, new_hp)
-            self.health_var.set(new_value)
-            self.after(20, self.animate_hp, new_hp)
+            self.health_bar_var.set(new_value)
+            self.after(30, self.animate_hp, new_hp)
+
+    def animate_hp_text(self, new_hp):
+        current_hp = int(self.health_label_var.get().split("/")[0])
+        if current_hp < new_hp:
+            new_value = min(current_hp + 1, new_hp)
+            self.health_label_var.set(f"{new_value} / {self.opponent.out.max_hp}")
+            self.after(20, self.animate_hp_text, new_hp)
+        elif current_hp > new_hp:
+            new_value = max(current_hp - 1, new_hp)
+            self.health_label_var.set(f"{new_value} / {self.opponent.out.max_hp}")
+            self.after(20, self.animate_hp_text, new_hp)

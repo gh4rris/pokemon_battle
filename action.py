@@ -58,3 +58,6 @@ class ChangePokemon(ctk.CTkFrame):
         self.pack_forget()
         if pokemon != self.player.out:
             self.player.change_pokemon(pokemon)
+        else:
+            self.battle.next_text = [(f"What will {self.player.name} do?", "S-End")]
+            self.battle.progress_text()
