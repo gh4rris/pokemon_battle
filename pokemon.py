@@ -21,7 +21,7 @@ class Pokemon():
             if foe.hp > 0:
                 return text
             foe.hp = 0
-            self.fainted = True
+            foe.fainted = True
             text.append((f"\n{foe.name} fainted!", "End"))
             return text
         else:

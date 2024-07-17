@@ -48,10 +48,17 @@ class ChangePokemon(ctk.CTkFrame):
         self.battle = battle
         self.player = player
         self.pack(expand=True, fill="both")
+        self.grid_columnconfigure((0, 2), weight=1, uniform="a")
+        self.grid_columnconfigure(1, weight=2, uniform="a")
+        self.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1, uniform="a")
         pokemon_1 = ctk.CTkButton(self, text=player.party[0].name, command=lambda: self.selected_pokemon(player.party[0]))
         pokemon_2 = ctk.CTkButton(self, text=player.party[1].name, command=lambda: self.selected_pokemon(player.party[1]))
-        pokemon_1.pack()
-        pokemon_2.pack()
+        self.pokemon_buttons = [pokemon_1, pokemon_2]
+        back = ctk.CTkButton(self, text="Back", command=lambda: self.selected_pokemon(player.out))
+        self.buton_states(player, back)
+        pokemon_1.grid(row=0, column=1, sticky="nsew")
+        pokemon_2.grid(row=1, column=1, sticky="nsew")
+        back.grid(row=5, column=2, sticky="nsew")
 
     def selected_pokemon(self, player_pokemon):
         self.battle.switch_button_state()
@@ -62,3 +69,10 @@ class ChangePokemon(ctk.CTkFrame):
         else:
             self.battle.next_text = [(f"What will {self.player.name} do?", "S-End")]
             self.battle.progress_text()
+
+    def buton_states(self, player, back):
+        for i, button in enumerate(self.pokemon_buttons):
+            if player.party[i].fainted:
+                button.configure(state="disabled")
+        if player.out.fainted:
+            back.configure(state="disabled")
