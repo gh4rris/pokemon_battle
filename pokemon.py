@@ -15,7 +15,7 @@ class Pokemon():
         rng = random.randint(1, 100)
         text = [(f"{self.name} used {move.name}", "S-Next")]
         self.trainer.turn = True
-        if rng <= move.accuracy:
+        if rng <= move.accuracy and not self.fainted:
             text[0] = text[0] + (lambda: foe.trainer.health_bar.change_hp(),)
             foe.hp -= move.attack
             if foe.hp > 0:

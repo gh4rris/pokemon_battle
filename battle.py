@@ -44,8 +44,10 @@ class Battle(ctk.CTkLabel):
         trainer.health_bar.place_widgets()
 
     def progress_text(self):
-        # print(f"player: {self.player.turn}, opponent: {self.opponent.turn}")
+        print(f"player: {self.player.turn}, opponent: {self.opponent.turn}")
         self.next_button.configure(state="disabled")
+        if self.player.out !=None and self.player.out.fainted and len(self.next_text) == 3:
+            self.change_pokemon_button.configure(state="disabled")
         line = self.next_text[0]
         if line[1].startswith("S"):
             self.grid_forget()
@@ -64,8 +66,6 @@ class Battle(ctk.CTkLabel):
             self.turn_conditions()
 
     def turn_conditions(self):
-        if self.player.out.fainted and len(self.next_text) == 2:
-            self.switch_button_state(True)
         if self.player.turn == True and self.opponent.turn == True and len(self.next_text) == 1:
             self.player.turn = False
             self.opponent.turn = False
@@ -83,15 +83,16 @@ class Battle(ctk.CTkLabel):
 
     def switch_button_state(self, change_alt=False):
         buttons = [self.fight_button, self.change_pokemon_button, self.item_button,self.run_button]
-        for button in buttons:
-            if button.cget("state") == "normal":
+        if self.player.out.fainted and len(self.next_text) == 3:
+            for button in buttons:
                 button.configure(state="disabled")
-            else:
-                button.configure(state="normal")
-        if change_alt and self.change_pokemon_button.cget("state") == "normal":
-            self.change_pokemon_button.configure(state="disabled")
-        elif change_alt and self.change_pokemon_button.cget("state") == "disabled":
             self.change_pokemon_button.configure(state="normal")
+        else:
+            for button in buttons:
+                if button.cget("state") == "normal":
+                    button.configure(state="disabled")
+                else:
+                    button.configure(state="normal")
 
     def update_font_size(self, event):
         if event.widget == self.window:
