@@ -44,10 +44,11 @@ class Fight(ctk.CTkFrame):
 
 
 class ChangePokemon(ctk.CTkFrame):
-    def __init__(self, parent, battle, player):
+    def __init__(self, parent, battle, player, opponent):
         super().__init__(parent)
         self.battle = battle
         self.player = player
+        self.opponent = opponent
         self.pack(expand=True, fill="both")
         self.grid_columnconfigure((0, 2), weight=1, uniform="a")
         self.grid_columnconfigure(1, weight=2, uniform="a")
@@ -68,8 +69,12 @@ class ChangePokemon(ctk.CTkFrame):
             self.player.change_pokemon(player_pokemon)
             player_pokemon.trainer.turn = True
         else:
-            self.battle.next_text = [(f"What will {self.player.name} do?", "S-End")]
-            self.battle.progress_text()
+            opponent_previous_hp = int(self.opponent.health_bar.health_label_var.get().split("/")[0])
+            if opponent_previous_hp >= 1:
+                self.battle.next_text = [(f"What will {self.player.name} do?", "S-End")]
+                self.battle.progress_text()
+            else:
+                self.opponent.no_player_change(self.battle)
 
     def buton_states(self, player, back):
         for i, button in enumerate(self.pokemon_buttons):

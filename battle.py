@@ -20,7 +20,7 @@ class Battle(ctk.CTkLabel):
 
         # Widgets
         self.fight_button = ctk.CTkButton(self.frame, text="Fight", state="disabled", command=lambda: Fight(self.frame, self, player.out, opponent.out))
-        self.change_pokemon_button = ctk.CTkButton(self.frame, text="Change Pokemon", state="disabled", command=lambda: ChangePokemon(self.window, self, player))
+        self.change_pokemon_button = ctk.CTkButton(self.frame, text="Change Pokemon", state="disabled", command=lambda: ChangePokemon(self.window, self, player, opponent))
         self.item_button = ctk.CTkButton(self.frame, text="Item", state="disabled")
         self.run_button = ctk.CTkButton(self.frame, text="Run", state="disabled")
         self.next_text = None
@@ -68,7 +68,7 @@ class Battle(ctk.CTkLabel):
             self.turn_conditions()
 
     def turn_conditions(self):
-        if self.player.turn == True and self.opponent.turn == True and len(self.next_text) == 1:
+        if self.player.turn == True and self.opponent.turn == True and len(self.next_text) == 1 and not self.player.out.fainted:
             self.player.turn = False
             self.opponent.turn = False
         elif self.player.turn == True and self.opponent.turn == False and len(self.next_text) == 1:
