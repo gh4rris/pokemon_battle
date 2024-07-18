@@ -37,19 +37,19 @@ class PlayerHealthBar(ctk.CTkFrame):
         self.grid_rowconfigure((0, 1, 2), weight=1, uniform="a")
         self.grid_columnconfigure(0, weight=1, uniform="a")
         self.player = player
-        self.health_bar_var = ctk.DoubleVar()
         self.name_label_var = ctk.StringVar()
+        self.health_bar_var = ctk.DoubleVar()
         self.health_label_var = ctk.StringVar()
-        self.health_bar = ctk.CTkProgressBar(self, height=20, variable=self.health_bar_var)
         self.name_label = ctk.CTkLabel(self, textvariable=self.name_label_var)
+        self.health_bar = ctk.CTkProgressBar(self, height=20, variable=self.health_bar_var)
         self.health_label = ctk.CTkLabel(self, textvariable=self.health_label_var)
         player.health_bar = self
         
 
     def place_widgets(self):
         self.name_label_var.set(self.player.out.name)
-        self.health_label_var.set(f"{self.player.out.hp} / {self.player.out.max_hp}")
         self.health_bar_var.set(round(self.player.out.hp / self.player.out.max_hp, 2))
+        self.health_label_var.set(f"{self.player.out.hp} / {self.player.out.max_hp}")
         self.name_label.grid(row=0)
         self.health_bar.grid(row=1, sticky="we", padx=20)
         self.health_label.grid(row=2)
@@ -92,20 +92,20 @@ class OpponentHealthBar(ctk.CTkFrame):
         self.grid_rowconfigure((0, 1, 2), weight=1, uniform="a")
         self.grid_columnconfigure(0, weight=1, uniform="a")
         self.opponent = opponent
-        self.health_bar_var = ctk.DoubleVar()
         self.name_label_var = ctk.StringVar()
+        self.health_bar_var = ctk.DoubleVar()
         self.health_label_var = ctk.StringVar()
-        self.health_bar = ctk.CTkProgressBar(self, height=20, variable=self.health_bar_var)
         self.name_label = ctk.CTkLabel(self, textvariable=self.name_label_var)
+        self.health_bar = ctk.CTkProgressBar(self, height=20, variable=self.health_bar_var)
         self.health_label = ctk.CTkLabel(self, textvariable=self.health_label_var)
         opponent.health_bar = self
         
 
     def place_widgets(self):
         self.name_label_var.set(self.opponent.out.name)
+        self.health_bar_var.set(self.opponent.out.hp / self.opponent.out.max_hp)
         self.health_label_var.set(f"{self.opponent.out.hp} / {self.opponent.out.max_hp}")
         self.name_label.grid(row=0)
-        self.health_bar.set(self.opponent.out.hp / self.opponent.out.max_hp)
         self.health_bar.grid(row=1, sticky="we", padx=20)
         self.health_label.grid(row=2)
         self.place(relx=0, rely=0, relwidth=0.4, relheight=0.325)

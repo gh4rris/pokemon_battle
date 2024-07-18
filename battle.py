@@ -25,6 +25,8 @@ class Battle(ctk.CTkLabel):
         self.run_button = ctk.CTkButton(self.frame, text="Run", state="disabled")
         self.next_text = None
         self.next_button = ctk.CTkButton(frame, text="Next", command=self.progress_text, anchor="se", state="disabled")
+        self.yes_button = ctk.CTkButton(self.frame, text="Yes")
+        self.no_button = ctk.CTkButton(self.frame, text="No", command=lambda: opponent.switch_health_bars(self))
         
         self.fight_button.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
         self.change_pokemon_button.grid(row=0, column=2, sticky="nsew", padx=3, pady=3)
@@ -35,7 +37,7 @@ class Battle(ctk.CTkLabel):
     def oppening_battle(self, player, opponent):
         self.next_text = [(f"Champion {opponent.name} wants to battle!", "Next")]
         self.progress_text()
-        self.next_text = [(f"\n{opponent.name} sent out {opponent.party[0].name}.", "Next", lambda: self.send_pokemon_out(opponent, opponent.party[0])), 
+        self.next_text = [(f"\n{opponent.name} sent out {opponent.party[0].name}", "Next", lambda: self.send_pokemon_out(opponent, opponent.party[0])), 
                           (f"\nGo {player.party[0].name}!", "Next", lambda: self.send_pokemon_out(player, player.party[0])), 
                           (f"What will {player.name} do?", "S-End")]
 
@@ -83,7 +85,7 @@ class Battle(ctk.CTkLabel):
 
     def switch_button_state(self):
         buttons = [self.fight_button, self.change_pokemon_button, self.item_button,self.run_button]
-        if self.player.out.fainted and len(self.next_text) == 3:
+        if self.player.out.fainted and len(self.next_text) <= 3:
             for button in buttons:
                 button.configure(state="disabled")
             self.change_pokemon_button.configure(state="normal")
@@ -98,10 +100,8 @@ class Battle(ctk.CTkLabel):
 
     def yes_no_buttons(self):
         self.switch_button_state()
-        yes_button = ctk.CTkButton(self.frame, text="Yes")
-        no_button = ctk.CTkButton(self.frame, text="No")
-        yes_button.place(relx=0.01, rely=0.95, relwidth=0.18, relheight=0.25, anchor="sw")
-        no_button.place(relx=0.21, rely=0.95, relwidth=0.18, relheight=0.25, anchor="sw")
+        self.yes_button.place(relx=0.01, rely=0.95, relwidth=0.18, relheight=0.25, anchor="sw")
+        self.no_button.place(relx=0.21, rely=0.95, relwidth=0.18, relheight=0.25, anchor="sw")
 
     def update_font_size(self, event):
         if event.widget == self.window:
