@@ -29,6 +29,7 @@ class Opponent():
 
     def change_pokemon(self, battle):
         non_fainted_list = list(filter(lambda pokemon: not pokemon.fainted, self.party))
-        for mon in non_fainted_list:
-            print(mon.name)
-        battle.next_text = [(f"{self.name} is about to use", "S-Nexts")]
+        pokemon_choice = random.choice(non_fainted_list)
+        battle.next_text = [(f"{self.name} is about to use {pokemon_choice.name}", "S-Next"), (f"\nWill {battle.player.name} change pokemon?", "End", lambda: battle.yes_no_buttons())]
+        battle.next_button.configure(state="normal")
+        self.out = pokemon_choice

@@ -26,10 +26,10 @@ class Battle(ctk.CTkLabel):
         self.next_text = None
         self.next_button = ctk.CTkButton(frame, text="Next", command=self.progress_text, anchor="se", state="disabled")
         
-        self.fight_button.grid(row=0, column=1, sticky="nsew", padx=2, pady=2)
-        self.change_pokemon_button.grid(row=0, column=2, sticky="nsew", padx=2, pady=2)
-        self.item_button.grid(row=1, column=1, sticky="nsew", padx=2, pady=2)
-        self.run_button.grid(row=1, column=2, sticky="nsew", padx=2, pady=2)
+        self.fight_button.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
+        self.change_pokemon_button.grid(row=0, column=2, sticky="nsew", padx=3, pady=3)
+        self.item_button.grid(row=1, column=1, sticky="nsew", padx=3, pady=3)
+        self.run_button.grid(row=1, column=2, sticky="nsew", padx=3, pady=3)
         self.next_button.place(relx=0.6, rely=1, relwidth=0.2, relheight=0.3, anchor="se")
 
     def oppening_battle(self, player, opponent):
@@ -44,7 +44,7 @@ class Battle(ctk.CTkLabel):
         trainer.health_bar.place_widgets()
 
     def progress_text(self):
-        print(f"player: {self.player.turn}, opponent: {self.opponent.turn}")
+        # print(f"player: {self.player.turn}, opponent: {self.opponent.turn}")
         self.next_button.configure(state="disabled")
         if self.player.out !=None and self.player.out.fainted and len(self.next_text) == 3:
             self.change_pokemon_button.configure(state="disabled")
@@ -81,18 +81,27 @@ class Battle(ctk.CTkLabel):
             self.frame.update()
             time.sleep(0.02)
 
-    def switch_button_state(self, change_alt=False):
+    def switch_button_state(self):
         buttons = [self.fight_button, self.change_pokemon_button, self.item_button,self.run_button]
         if self.player.out.fainted and len(self.next_text) == 3:
             for button in buttons:
                 button.configure(state="disabled")
             self.change_pokemon_button.configure(state="normal")
+        elif self.opponent.out.fainted:
+            self.opponent.change_pokemon(self)
         else:
             for button in buttons:
                 if button.cget("state") == "normal":
                     button.configure(state="disabled")
                 else:
                     button.configure(state="normal")
+
+    def yes_no_buttons(self):
+        self.switch_button_state()
+        yes_button = ctk.CTkButton(self.frame, text="Yes")
+        no_button = ctk.CTkButton(self.frame, text="No")
+        yes_button.place(relx=0.01, rely=0.95, relwidth=0.18, relheight=0.25, anchor="sw")
+        no_button.place(relx=0.21, rely=0.95, relwidth=0.18, relheight=0.25, anchor="sw")
 
     def update_font_size(self, event):
         if event.widget == self.window:
