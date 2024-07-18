@@ -90,23 +90,44 @@ class Battle(ctk.CTkLabel):
 
     def switch_button_state(self):
         buttons = [self.fight_button, self.change_pokemon_button, self.item_button,self.run_button]
-        if self.player.out.fainted and len(self.next_text) <= 3:
-            for button in buttons:
-                button.configure(state="disabled")
-            self.change_pokemon_button.configure(state="normal")
-        elif self.opponent.out.fainted:
-            self.opponent.change_pokemon(self)
+        player_not_fainted = list(filter(lambda pokemon: not pokemon.fainted, self.player.party))
+        opponent_not_fainted = list(filter(lambda pokemon: not pokemon.fainted, self.opponent.party))
+        if len(player_not_fainted) == 0:
+            if self.next_text[0][1] == "S-End":
+                self.end_game(False)
+            else:
+                self.next_button.configure(state="disabled")
+        elif len(opponent_not_fainted) == 0:
+            if self.next_text[0][1].startswith("S"):
+                self.end_game(True)
+            else:
+                self.next_button.configure(state="disabled")
         else:
-            for button in buttons:
-                if button.cget("state") == "normal":
+            if self.player.out.fainted and len(self.next_text) <= 3:
+                for button in buttons:
                     button.configure(state="disabled")
-                else:
-                    button.configure(state="normal")
+                self.change_pokemon_button.configure(state="normal")
+            elif self.opponent.out.fainted:
+                self.opponent.change_pokemon(self)
+            else:
+                for button in buttons:
+                    if button.cget("state") == "normal":
+                        button.configure(state="disabled")
+                    else:
+                        button.configure(state="normal")
 
     def yes_no_buttons(self):
         self.switch_button_state()
         self.yes_button.place(relx=0.01, rely=0.95, relwidth=0.18, relheight=0.25, anchor="sw")
         self.no_button.place(relx=0.21, rely=0.95, relwidth=0.18, relheight=0.25, anchor="sw")
+
+    def end_game(self, player_win):
+        if player_win:
+            self.next_text = [(f"{self.player.name} defeated Champion {self.opponent.name}", "S-Next"), ("\nYou are the new Pokemon \nLeague Champion!", "End")]
+            self.next_button.configure(state="normal")
+        else:
+            self.next_text = [(f"{self.player.name} is out of usable pokemon", "S-Next"), (f"\n{self.player.name} whited out!", "End")]
+            self.next_button.configure(state="normal")
 
     def update_font_size(self, event):
         if event.widget == self.window:
