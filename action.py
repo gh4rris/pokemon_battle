@@ -55,12 +55,20 @@ class ChangePokemon(ctk.CTkFrame):
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1, uniform="a")
         pokemon_1 = ctk.CTkButton(self, text=player.party[0].name, command=lambda: self.selected_pokemon(player.party[0]))
         pokemon_2 = ctk.CTkButton(self, text=player.party[1].name, command=lambda: self.selected_pokemon(player.party[1]))
-        self.pokemon_buttons = [pokemon_1, pokemon_2]
+        pokemon_3 = ctk.CTkButton(self, text=player.party[2].name, command=lambda: self.selected_pokemon(player.party[2]))
+        pokemon_4 = ctk.CTkButton(self, text=player.party[3].name, command=lambda: self.selected_pokemon(player.party[3]))
+        pokemon_5 = ctk.CTkButton(self, text=player.party[4].name, command=lambda: self.selected_pokemon(player.party[4]))
+        pokemon_6 = ctk.CTkButton(self, text=player.party[5].name, command=lambda: self.selected_pokemon(player.party[5]))
+        self.pokemon_buttons = [pokemon_1, pokemon_2, pokemon_3, pokemon_4, pokemon_5]
         back = ctk.CTkButton(self, text="Back", command=lambda: self.selected_pokemon(player.out))
         self.buton_states(player, back)
-        pokemon_1.grid(row=0, column=1, sticky="nsew")
-        pokemon_2.grid(row=1, column=1, sticky="nsew")
-        back.grid(row=5, column=2, sticky="nsew")
+        pokemon_1.grid(row=0, column=1, sticky="nsew", padx=2, pady=2)
+        pokemon_2.grid(row=1, column=1, sticky="nsew", padx=2, pady=2)
+        pokemon_3.grid(row=2, column=1, sticky="nsew", padx=2, pady=2)
+        pokemon_4.grid(row=3, column=1, sticky="nsew", padx=2, pady=2)
+        pokemon_5.grid(row=4, column=1, sticky="nsew", padx=2, pady=2)
+        pokemon_6.grid(row=5, column=1, sticky="nsew", padx=2, pady=2)
+        back.grid(row=5, column=2, sticky="nsew", padx=2, pady=2)
 
     def selected_pokemon(self, player_pokemon):
         self.battle.switch_button_state()
