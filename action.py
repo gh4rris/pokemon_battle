@@ -33,12 +33,13 @@ class Fight(ctk.CTkFrame):
             self.battle.next_text = self.opponent_pokemon.attack(opponent_move, self.player_pokemon)
             self.battle.next_text.extend(self.player_pokemon.attack(move, self.opponent_pokemon))
             self.battle.next_text.append((f"What will {self.player_pokemon.trainer.name} do?", "S-End"))
+        # print(self.battle.next_text)
         self.battle.progress_text()
 
     def back(self):
         self.place_forget()
         self.battle.next_button.configure(text="Next", anchor="se", state="disabled")
-        self.battle.next_button.configure(command=lambda: self.battle.progress_text(self.battle.next_text))
+        self.battle.next_button.configure(command=lambda: self.battle.progress_text())
         self.battle.progress_text()
 
 

@@ -25,8 +25,8 @@ class Battle(ctk.CTkLabel):
         self.run_button = ctk.CTkButton(self.frame, text="Run", state="disabled")
         self.next_text = None
         self.next_button = ctk.CTkButton(frame, text="Next", command=self.progress_text, anchor="se", state="disabled")
-        self.yes_button = ctk.CTkButton(self.frame, text="Yes")
-        self.no_button = ctk.CTkButton(self.frame, text="No", command=lambda: opponent.switch_health_bars(self))
+        self.yes_button = ctk.CTkButton(self.frame, text="Yes", command=lambda: opponent.yes_player_change(self))
+        self.no_button = ctk.CTkButton(self.frame, text="No", command=lambda: opponent.no_player_change(self))
         
         self.fight_button.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
         self.change_pokemon_button.grid(row=0, column=2, sticky="nsew", padx=3, pady=3)
@@ -72,8 +72,13 @@ class Battle(ctk.CTkLabel):
             self.player.turn = False
             self.opponent.turn = False
         elif self.player.turn == True and self.opponent.turn == False and len(self.next_text) == 1:
-            opponent_move = random.choice(self.opponent.out.moves)
-            self.next_text = self.opponent.out.attack(opponent_move, self.player.out) + [(f"What will {self.player.name} do?", "S-End")]
+            previous_hp = int(self.opponent.health_bar.health_label_var.get().split("/")[0])
+            if previous_hp >= 1:
+                opponent_move = random.choice(self.opponent.out.moves)
+                self.next_text = self.opponent.out.attack(opponent_move, self.player.out) + [(f"What will {self.player.name} do?", "S-End")]
+            else:
+                self.next_text = self.opponent.set_text()
+                self.player.turn = False
 
     def animate_text(self, line):
         current_text = self.string_var.get()
