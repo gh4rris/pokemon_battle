@@ -12,6 +12,8 @@ class Battle(ctk.CTkLabel):
         self.current_font = ("Arial", min(self.window.width // 20, self.window.height // 20), "bold")
         self.configure(textvariable=self.string_var, anchor="nw", font=self.current_font, justify="left")
         window.bind("<Configure>", self.update_font_size)
+        self.fight_frame = Fight(frame, self, player, opponent)
+        self.change_frame = ChangePokemon(self.window, self, player, opponent)
         self.grid(row=0, column=0, sticky="nsew", rowspan=2, padx=25, pady=25)
         self.player = player
         self.opponent = opponent
@@ -19,14 +21,16 @@ class Battle(ctk.CTkLabel):
         opponent.battle = self
 
         # Widgets
-        self.fight_button = ctk.CTkButton(self.frame, text="Fight", state="disabled", command=lambda: Fight(self.frame, self, player.out, opponent.out))
-        self.change_pokemon_button = ctk.CTkButton(self.frame, text="Change Pokemon", state="disabled", command=lambda: ChangePokemon(self.window, self, player, opponent))
-        self.item_button = ctk.CTkButton(self.frame, text="Item", state="disabled")
-        self.run_button = ctk.CTkButton(self.frame, text="Run", state="disabled")
+        self.fight_button = ctk.CTkButton(self.frame, text="Fight", state="disabled", command=lambda: self.fight_frame.frame_place(), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.change_pokemon_button = ctk.CTkButton(self.frame, text="Change Pokemon", state="disabled", command=lambda: self.change_frame.frame_place(), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.item_button = ctk.CTkButton(self.frame, text="Item", state="disabled", font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.run_button = ctk.CTkButton(self.frame, text="Run", state="disabled", font=("Arial", min(window.width // 35, window.height // 35), "bold"))
         self.next_text = None
-        self.next_button = ctk.CTkButton(frame, text="Next", command=self.progress_text, anchor="se", state="disabled")
-        self.yes_button = ctk.CTkButton(self.frame, text="Yes", command=lambda: opponent.yes_player_change(self))
-        self.no_button = ctk.CTkButton(self.frame, text="No", command=lambda: opponent.no_player_change(self))
+        self.next_button = ctk.CTkButton(frame, text="Next", command=self.progress_text, anchor="se", state="disabled", font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.yes_button = ctk.CTkButton(self.frame, text="Yes", command=lambda: opponent.yes_player_change(self), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.no_button = ctk.CTkButton(self.frame, text="No", command=lambda: opponent.no_player_change(self), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.buttons = [self.fight_button, self.change_pokemon_button, self.item_button, self.run_button, self.next_button, self.yes_button, self.no_button, self.fight_frame.attack_1, self.fight_frame.attack_2, self.fight_frame.attack_3, self.fight_frame.attack_4,
+                        self.change_frame.pokemon_1, self.change_frame.pokemon_2, self.change_frame.pokemon_3, self.change_frame.pokemon_4, self.change_frame.pokemon_5, self.change_frame.pokemon_6, self.change_frame.back]
         
         self.fight_button.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
         self.change_pokemon_button.grid(row=0, column=2, sticky="nsew", padx=3, pady=3)
@@ -134,14 +138,17 @@ class Battle(ctk.CTkLabel):
             new_size = min(event.width // 20, event.height // 20)
             new_font = (self.current_font[0], new_size, self.current_font[2])
             self.configure(font=new_font)
-            # player health
+            # health bars
             new_size = min(event.width // 25, event.height // 25)
-            new_lvl_size = min(event.width // 35, event.height // 35)
+            new_button_size = min(event.width // 35, event.height // 35)
             new_font = ("Arial", new_size, "bold")
-            new_lvl_font = ("Arial", new_lvl_size, "bold")
+            new_button_font = ("Arial", new_button_size, "bold")
             self.window.player_bar.name_label.configure(font=new_font)
             self.window.player_bar.health_label.configure(font=new_font)
-            self.window.player_bar.lvl_label.configure(font=new_lvl_font)
+            self.window.player_bar.lvl_label.configure(font=new_button_font)
             self.window.opponent_bar.name_label.configure(font=new_font)
             self.window.opponent_bar.health_label.configure(font=new_font)
-            self.window.opponent_bar.lvl_label.configure(font=new_lvl_font)
+            self.window.opponent_bar.lvl_label.configure(font=new_button_font)
+            # buttons
+            for button in self.buttons:
+                button.configure(font=new_button_font)

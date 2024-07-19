@@ -23,8 +23,9 @@ class Window(ctk.CTk):
 
 
 class TextActionFrame(ctk.CTkFrame):
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, window):
+        super().__init__(window)
+        self.window = window
         self.place(relx=0, rely=0.65, relwidth=1, relheight=0.35)
         self.grid_columnconfigure(0, weight=3, uniform="a")
         self.grid_columnconfigure((1, 2), weight=1, uniform="a")
