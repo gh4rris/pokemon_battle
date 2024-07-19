@@ -13,7 +13,7 @@ class Window(ctk.CTk):
         self.text_action_frame = TextActionFrame(self)
         self.start_button = ctk.CTkButton(self, text="Start", corner_radius=100, font=("Arial", 30, "bold"), command=lambda: self.start_game(player, opponent))
         self.start_button.place(relx=0.2, rely=0.2, relwidth=0.6, relheight=0.6)
-        self.trainer_bar = PlayerHealthBar(self, player)
+        self.player_bar = PlayerHealthBar(self, player)
         self.opponent_bar = OpponentHealthBar(self, opponent)
         self.mainloop()
 
@@ -32,17 +32,18 @@ class TextActionFrame(ctk.CTkFrame):
 
 
 class PlayerHealthBar(ctk.CTkFrame):
-    def __init__(self, parent, player):
-        super().__init__(parent)
+    def __init__(self, window, player):
+        super().__init__(window)
         self.grid_rowconfigure((0, 1, 2), weight=1, uniform="a")
-        self.grid_columnconfigure(0, weight=1, uniform="a")
+        self.grid_columnconfigure((0, 1, 2), weight=1, uniform="a")
         self.player = player
         self.name_label_var = ctk.StringVar()
         self.health_bar_var = ctk.DoubleVar()
         self.health_label_var = ctk.StringVar()
-        self.name_label = ctk.CTkLabel(self, textvariable=self.name_label_var)
+        self.name_label = ctk.CTkLabel(self, textvariable=self.name_label_var, font=("Arial", min(window.width // 25, window.height // 25), "bold"))
         self.health_bar = ctk.CTkProgressBar(self, height=20, variable=self.health_bar_var)
-        self.health_label = ctk.CTkLabel(self, textvariable=self.health_label_var)
+        self.health_label = ctk.CTkLabel(self, textvariable=self.health_label_var, font=("Arial", min(window.width // 25, window.height // 25), "bold"))
+        self.lvl_label = ctk.CTkLabel(self, font=("Arial", min(window.width // 35, window.height // 35), "bold"))
         player.health_bar = self
         
 
@@ -50,9 +51,11 @@ class PlayerHealthBar(ctk.CTkFrame):
         self.name_label_var.set(self.player.out.name)
         self.health_bar_var.set(round(self.player.out.hp / self.player.out.max_hp, 2))
         self.health_label_var.set(f"{self.player.out.hp} / {self.player.out.max_hp}")
-        self.name_label.grid(row=0)
-        self.health_bar.grid(row=1, sticky="we", padx=20)
-        self.health_label.grid(row=2)
+        self.lvl_label.configure(text=f"Lvl {self.player.out.lvl}")
+        self.name_label.grid(row=0, column=0, columnspan=3, sticky="s")
+        self.health_bar.grid(row=1, column=0, columnspan=3, sticky="we", padx=20)
+        self.health_label.grid(row=2, column=0, columnspan=3, sticky="n")
+        self.lvl_label.grid(row=0, column=2, sticky="s")
         self.place(relx=0.6, rely=0.325, relwidth=0.4, relheight=0.325)
 
     def change_hp(self):
@@ -87,17 +90,18 @@ class PlayerHealthBar(ctk.CTkFrame):
 
 
 class OpponentHealthBar(ctk.CTkFrame):
-    def __init__(self, parent, opponent):
-        super().__init__(parent)
+    def __init__(self, window, opponent):
+        super().__init__(window)
         self.grid_rowconfigure((0, 1, 2), weight=1, uniform="a")
-        self.grid_columnconfigure(0, weight=1, uniform="a")
+        self.grid_columnconfigure((0, 1, 2), weight=1, uniform="a")
         self.opponent = opponent
         self.name_label_var = ctk.StringVar()
         self.health_bar_var = ctk.DoubleVar()
         self.health_label_var = ctk.StringVar()
-        self.name_label = ctk.CTkLabel(self, textvariable=self.name_label_var)
+        self.name_label = ctk.CTkLabel(self, textvariable=self.name_label_var, font=("Arial", min(window.width // 25, window.height // 25), "bold"))
         self.health_bar = ctk.CTkProgressBar(self, height=20, variable=self.health_bar_var)
-        self.health_label = ctk.CTkLabel(self, textvariable=self.health_label_var)
+        self.health_label = ctk.CTkLabel(self, textvariable=self.health_label_var, font=("Arial", min(window.width // 25, window.height // 25), "bold"))
+        self.lvl_label = ctk.CTkLabel(self, font=("Arial", min(window.width // 35, window.height // 35), "bold"))
         opponent.health_bar = self
         
 
@@ -105,9 +109,11 @@ class OpponentHealthBar(ctk.CTkFrame):
         self.name_label_var.set(self.opponent.out.name)
         self.health_bar_var.set(self.opponent.out.hp / self.opponent.out.max_hp)
         self.health_label_var.set(f"{self.opponent.out.hp} / {self.opponent.out.max_hp}")
-        self.name_label.grid(row=0)
-        self.health_bar.grid(row=1, sticky="we", padx=20)
-        self.health_label.grid(row=2)
+        self.lvl_label.configure(text=f"Lvl {self.opponent.out.lvl}")
+        self.name_label.grid(row=0, column=0, columnspan=3, sticky="s")
+        self.health_bar.grid(row=1, column=0, columnspan=3, sticky="we", padx=20)
+        self.health_label.grid(row=2, column=0, columnspan=3, sticky="n")
+        self.lvl_label.grid(row=0, column=2, sticky="s")
         self.place(relx=0, rely=0, relwidth=0.4, relheight=0.325)
 
     def change_hp(self):

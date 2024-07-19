@@ -11,7 +11,7 @@ class Battle(ctk.CTkLabel):
         self.string_var = ctk.StringVar()
         self.current_font = ("Arial", min(self.window.width // 20, self.window.height // 20), "bold")
         self.configure(textvariable=self.string_var, anchor="nw", font=self.current_font, justify="left")
-        self.window.bind("<Configure>", self.update_font_size)
+        window.bind("<Configure>", self.update_font_size)
         self.grid(row=0, column=0, sticky="nsew", rowspan=2, padx=25, pady=25)
         self.player = player
         self.opponent = opponent
@@ -46,7 +46,6 @@ class Battle(ctk.CTkLabel):
         trainer.health_bar.place_widgets()
 
     def progress_text(self):
-        # print(f"player: {self.player.turn}, opponent: {self.opponent.turn}")
         self.next_button.configure(state="disabled")
         if self.player.out !=None and self.player.out.fainted and len(self.next_text) == 3:
             self.change_pokemon_button.configure(state="disabled")
@@ -68,10 +67,10 @@ class Battle(ctk.CTkLabel):
             self.turn_conditions()
 
     def turn_conditions(self):
-        if self.player.turn == True and self.opponent.turn == True and len(self.next_text) == 1 and not self.player.out.fainted:
+        if self.player.turn and self.opponent.turn and len(self.next_text) == 1 and not self.player.out.fainted:
             self.player.turn = False
             self.opponent.turn = False
-        elif self.player.turn == True and self.opponent.turn == False and len(self.next_text) == 1:
+        elif self.player.turn and not self.opponent.turn and len(self.next_text) == 1:
             previous_hp = int(self.opponent.health_bar.health_label_var.get().split("/")[0])
             if previous_hp >= 1:
                 opponent_move = random.choice(self.opponent.out.moves)
@@ -131,6 +130,18 @@ class Battle(ctk.CTkLabel):
 
     def update_font_size(self, event):
         if event.widget == self.window:
+            # battle text
             new_size = min(event.width // 20, event.height // 20)
             new_font = (self.current_font[0], new_size, self.current_font[2])
             self.configure(font=new_font)
+            # player health
+            new_size = min(event.width // 25, event.height // 25)
+            new_lvl_size = min(event.width // 35, event.height // 35)
+            new_font = ("Arial", new_size, "bold")
+            new_lvl_font = ("Arial", new_lvl_size, "bold")
+            self.window.player_bar.name_label.configure(font=new_font)
+            self.window.player_bar.health_label.configure(font=new_font)
+            self.window.player_bar.lvl_label.configure(font=new_lvl_font)
+            self.window.opponent_bar.name_label.configure(font=new_font)
+            self.window.opponent_bar.health_label.configure(font=new_font)
+            self.window.opponent_bar.lvl_label.configure(font=new_lvl_font)
