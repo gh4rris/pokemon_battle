@@ -35,10 +35,12 @@ class Opponent():
         self.out = pokemon_choice
 
     def yes_player_change(self, battle):
+        print(self.battle.player.out.fainted)
         battle.change_pokemon_button.cget("command")()
         battle.yes_button.place_forget()
         battle.no_button.place_forget()
         battle.switch_button_state()
+        print(self.battle.player.out.fainted)
 
     def no_player_change(self, battle):
         battle.yes_button.place_forget()

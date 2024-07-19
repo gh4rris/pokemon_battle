@@ -8,10 +8,10 @@ class Fight(ctk.CTkFrame):
         self.player = player
         self.opponent = opponent
         self.window = frame.window
-        self.attack_1 = ctk.CTkButton(self, font=("Arial", min(frame.window.width // 35, frame.window.height // 35), "bold"))
-        self.attack_2 = ctk.CTkButton(self, font=("Arial", min(frame.window.width // 35, frame.window.height // 35), "bold"))
-        self.attack_3 = ctk.CTkButton(self, font=("Arial", min(frame.window.width // 35, frame.window.height // 35), "bold"))
-        self.attack_4 = ctk.CTkButton(self, font=("Arial", min(frame.window.width // 35, frame.window.height // 35), "bold"))
+        self.attack_1 = ctk.CTkButton(self, font=("Arial", min(frame.window.width // 35, frame.window.height // 35), "bold"), corner_radius=20, fg_color="#e61010", border_color="#cc0e0e", border_width=2, text_color="#FFCCCC", text_color_disabled="#775555", hover_color="#f71111")
+        self.attack_2 = ctk.CTkButton(self, font=("Arial", min(frame.window.width // 35, frame.window.height // 35), "bold"), corner_radius=20, fg_color="#e61010", border_color="#cc0e0e", border_width=2, text_color="#FFCCCC", text_color_disabled="#775555", hover_color="#f71111")
+        self.attack_3 = ctk.CTkButton(self, font=("Arial", min(frame.window.width // 35, frame.window.height // 35), "bold"), corner_radius=20, fg_color="#e61010", border_color="#cc0e0e", border_width=2, text_color="#FFCCCC", text_color_disabled="#775555", hover_color="#f71111")
+        self.attack_4 = ctk.CTkButton(self, font=("Arial", min(frame.window.width // 35, frame.window.height // 35), "bold"), corner_radius=20, fg_color="#e61010", border_color="#cc0e0e", border_width=2, text_color="#FFCCCC", text_color_disabled="#775555", hover_color="#f71111")
         self.configure(fg_color="transparent")
         
     def determine_turn(self, move):
@@ -58,14 +58,14 @@ class ChangePokemon(ctk.CTkFrame):
         self.grid_columnconfigure((0, 2), weight=1, uniform="a")
         self.grid_columnconfigure(1, weight=2, uniform="a")
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1, uniform="a")
-        self.pokemon_1 = ctk.CTkButton(self, text=player.party[0].name, command=lambda: self.selected_pokemon(player.party[0]), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
-        self.pokemon_2 = ctk.CTkButton(self, text=player.party[1].name, command=lambda: self.selected_pokemon(player.party[1]), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
-        self.pokemon_3 = ctk.CTkButton(self, text=player.party[2].name, command=lambda: self.selected_pokemon(player.party[2]), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
-        self.pokemon_4 = ctk.CTkButton(self, text=player.party[3].name, command=lambda: self.selected_pokemon(player.party[3]), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
-        self.pokemon_5 = ctk.CTkButton(self, text=player.party[4].name, command=lambda: self.selected_pokemon(player.party[4]), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
-        self.pokemon_6 = ctk.CTkButton(self, text=player.party[5].name, command=lambda: self.selected_pokemon(player.party[5]), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.pokemon_1 = ctk.CTkButton(self, text=player.party[0].name, command=lambda: self.selected_pokemon(player.party[0]), font=("Arial", min(window.width // 35, window.height // 35), "bold"), corner_radius=20, fg_color="#17e3e3", border_color="#0fbfbf", border_width=2, text_color="#555577", text_color_disabled="#8888AA", hover_color="#0eeded")
+        self.pokemon_2 = ctk.CTkButton(self, text=player.party[1].name, command=lambda: self.selected_pokemon(player.party[1]), font=("Arial", min(window.width // 35, window.height // 35), "bold"), corner_radius=20, fg_color="#17e3e3", border_color="#0fbfbf", border_width=2, text_color="#555577", text_color_disabled="#8888AA", hover_color="#0eeded")
+        self.pokemon_3 = ctk.CTkButton(self, text=player.party[2].name, command=lambda: self.selected_pokemon(player.party[2]), font=("Arial", min(window.width // 35, window.height // 35), "bold"), corner_radius=20, fg_color="#17e3e3", border_color="#0fbfbf", border_width=2, text_color="#555577", text_color_disabled="#8888AA", hover_color="#0eeded")
+        self.pokemon_4 = ctk.CTkButton(self, text=player.party[3].name, command=lambda: self.selected_pokemon(player.party[3]), font=("Arial", min(window.width // 35, window.height // 35), "bold"), corner_radius=20, fg_color="#17e3e3", border_color="#0fbfbf", border_width=2, text_color="#555577", text_color_disabled="#8888AA", hover_color="#0eeded")
+        self.pokemon_5 = ctk.CTkButton(self, text=player.party[4].name, command=lambda: self.selected_pokemon(player.party[4]), font=("Arial", min(window.width // 35, window.height // 35), "bold"), corner_radius=20, fg_color="#17e3e3", border_color="#0fbfbf", border_width=2, text_color="#555577", text_color_disabled="#8888AA", hover_color="#0eeded")
+        self.pokemon_6 = ctk.CTkButton(self, text=player.party[5].name, command=lambda: self.selected_pokemon(player.party[5]), font=("Arial", min(window.width // 35, window.height // 35), "bold"), corner_radius=20, fg_color="#17e3e3", border_color="#0fbfbf", border_width=2, text_color="#555577", text_color_disabled="#8888AA", hover_color="#0eeded")
         self.pokemon_buttons = [self.pokemon_1, self.pokemon_2, self.pokemon_3, self.pokemon_4, self.pokemon_5, self.pokemon_6]
-        self.back = ctk.CTkButton(self, text="Back", command=lambda: self.selected_pokemon(player.out), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.back = ctk.CTkButton(self, text="Back", command=lambda: self.selected_pokemon(player.out), font=("Arial", min(window.width // 35, window.height // 35), "bold"), corner_radius=20, fg_color="#24d459", border_color="#1db34a", border_width=2, text_color="#CCEECC", text_color_disabled="#557755", hover_color="#18e054")
         self.pokemon_1.grid(row=0, column=1, sticky="nsew", padx=2, pady=2)
         self.pokemon_2.grid(row=1, column=1, sticky="nsew", padx=2, pady=2)
         self.pokemon_3.grid(row=2, column=1, sticky="nsew", padx=2, pady=2)
@@ -99,6 +99,8 @@ class ChangePokemon(ctk.CTkFrame):
                 button.configure(state="disabled")
         if player.out.fainted:
             back.configure(state="disabled")
+        else:
+            back.configure(state="normal")
 
 
 class Item(ctk.CTkFrame):
@@ -110,7 +112,7 @@ class Item(ctk.CTkFrame):
         self.grid_columnconfigure(1, weight=2, uniform="a")
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1, uniform="a")
         self.label = ctk.CTkLabel(self, text="No items available", font=("Arial", min(window.width // 35, window.height // 35), "bold"))
-        self.back = ctk.CTkButton(self, text="Back", command=lambda: self.go_back(), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.back = ctk.CTkButton(self, text="Back", command=lambda: self.go_back(), font=("Arial", min(window.width // 35, window.height // 35), "bold"), corner_radius=20, fg_color="#24d459", border_color="#1db34a", border_width=2, text_color="#CCEECC", text_color_disabled="#557755", hover_color="#18e054")
         self.label.grid(row=0, column=1, sticky="nsew")
         self.back.grid(row=5, column=2, sticky="nsew", padx=2, pady=2)
 

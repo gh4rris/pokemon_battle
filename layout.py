@@ -11,7 +11,7 @@ class Window(ctk.CTk):
         self.geometry(f"{size[0]}x{size[1]}")
         self.minsize(self.width, self.height)
         self.text_action_frame = TextActionFrame(self)
-        self.start_button = ctk.CTkButton(self, text="Start", corner_radius=100, font=("Arial", 30, "bold"), command=lambda: self.start_game(player, opponent))
+        self.start_button = ctk.CTkButton(self, text="Start", font=("Arial", 30, "bold"), command=lambda: self.start_game(player, opponent), corner_radius=20, fg_color="#24d459", border_color="#1db34a", border_width=2, text_color="#CCEECC", text_color_disabled="#557755", hover_color="#18e054")
         self.start_button.place(relx=0.2, rely=0.2, relwidth=0.6, relheight=0.6)
         self.player_bar = PlayerHealthBar(self, player)
         self.opponent_bar = OpponentHealthBar(self, opponent)
