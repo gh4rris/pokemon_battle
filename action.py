@@ -99,3 +99,26 @@ class ChangePokemon(ctk.CTkFrame):
                 button.configure(state="disabled")
         if player.out.fainted:
             back.configure(state="disabled")
+
+
+class Item(ctk.CTkFrame):
+    def __init__(self, window, battle, player):
+        super().__init__(window)
+        self.battle = battle
+        self.player = player
+        self.grid_columnconfigure((0, 2), weight=1, uniform="a")
+        self.grid_columnconfigure(1, weight=2, uniform="a")
+        self.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1, uniform="a")
+        self.label = ctk.CTkLabel(self, text="No items available", font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.back = ctk.CTkButton(self, text="Back", command=lambda: self.go_back(), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.label.grid(row=0, column=1, sticky="nsew")
+        self.back.grid(row=5, column=2, sticky="nsew", padx=2, pady=2)
+
+    def frame_place(self):
+        self.pack(expand=True, fill="both")
+
+    def go_back(self):
+        self.battle.switch_button_state()
+        self.battle.next_text = [(f"What will {self.player.name} do?", "S-End")]
+        self.pack_forget()
+        self.battle.progress_text()

@@ -1,7 +1,7 @@
 import customtkinter as ctk
 import random
 import time
-from action import Fight, ChangePokemon
+from action import Fight, ChangePokemon, Item
 
 class Battle(ctk.CTkLabel):
     def __init__(self, frame, window, player, opponent):
@@ -13,7 +13,8 @@ class Battle(ctk.CTkLabel):
         self.configure(textvariable=self.string_var, anchor="nw", font=self.current_font, justify="left")
         window.bind("<Configure>", self.update_font_size)
         self.fight_frame = Fight(frame, self, player, opponent)
-        self.change_frame = ChangePokemon(self.window, self, player, opponent)
+        self.change_frame = ChangePokemon(window, self, player, opponent)
+        self.item_frame = Item(window, self, player)
         self.grid(row=0, column=0, sticky="nsew", rowspan=2, padx=25, pady=25)
         self.player = player
         self.opponent = opponent
@@ -21,16 +22,16 @@ class Battle(ctk.CTkLabel):
         opponent.battle = self
 
         # Widgets
-        self.fight_button = ctk.CTkButton(self.frame, text="Fight", state="disabled", command=lambda: self.fight_frame.frame_place(), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
-        self.change_pokemon_button = ctk.CTkButton(self.frame, text="Change Pokemon", state="disabled", command=lambda: self.change_frame.frame_place(), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
-        self.item_button = ctk.CTkButton(self.frame, text="Item", state="disabled", font=("Arial", min(window.width // 35, window.height // 35), "bold"))
-        self.run_button = ctk.CTkButton(self.frame, text="Run", state="disabled", font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.fight_button = ctk.CTkButton(self.frame, text="Fight", state="disabled", command=self.fight_frame.frame_place, font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.change_pokemon_button = ctk.CTkButton(self.frame, text="Change Pokemon", state="disabled", command=self.change_frame.frame_place, font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.item_button = ctk.CTkButton(self.frame, text="Item", state="disabled", command=self.item_frame.frame_place, font=("Arial", min(window.width // 35, window.height // 35), "bold"))
+        self.run_button = ctk.CTkButton(self.frame, text="Run", state="disabled", command=self.run, font=("Arial", min(window.width // 35, window.height // 35), "bold"))
         self.next_text = None
         self.next_button = ctk.CTkButton(frame, text="Next", command=self.progress_text, anchor="se", state="disabled", font=("Arial", min(window.width // 35, window.height // 35), "bold"))
         self.yes_button = ctk.CTkButton(self.frame, text="Yes", command=lambda: opponent.yes_player_change(self), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
         self.no_button = ctk.CTkButton(self.frame, text="No", command=lambda: opponent.no_player_change(self), font=("Arial", min(window.width // 35, window.height // 35), "bold"))
         self.buttons = [self.fight_button, self.change_pokemon_button, self.item_button, self.run_button, self.next_button, self.yes_button, self.no_button, self.fight_frame.attack_1, self.fight_frame.attack_2, self.fight_frame.attack_3, self.fight_frame.attack_4,
-                        self.change_frame.pokemon_1, self.change_frame.pokemon_2, self.change_frame.pokemon_3, self.change_frame.pokemon_4, self.change_frame.pokemon_5, self.change_frame.pokemon_6, self.change_frame.back]
+                        self.change_frame.pokemon_1, self.change_frame.pokemon_2, self.change_frame.pokemon_3, self.change_frame.pokemon_4, self.change_frame.pokemon_5, self.change_frame.pokemon_6, self.change_frame.back, self.item_frame.back, self.item_frame.label]
         
         self.fight_button.grid(row=0, column=1, sticky="nsew", padx=3, pady=3)
         self.change_pokemon_button.grid(row=0, column=2, sticky="nsew", padx=3, pady=3)
@@ -83,6 +84,11 @@ class Battle(ctk.CTkLabel):
                 self.next_text = self.opponent.set_text()
                 self.player.turn = False
 
+    def run(self):
+        self.switch_button_state()
+        self.next_text = [(f"Can't flee this fight!", "S-Next"), (f"What will {self.player.name} do?", "S-End")]
+        self.progress_text()
+
     def animate_text(self, line):
         current_text = self.string_var.get()
         for i in line:
@@ -96,7 +102,7 @@ class Battle(ctk.CTkLabel):
         player_not_fainted = list(filter(lambda pokemon: not pokemon.fainted, self.player.party))
         opponent_not_fainted = list(filter(lambda pokemon: not pokemon.fainted, self.opponent.party))
         if len(player_not_fainted) == 0:
-            if self.next_text[0][1] == "S-End":
+            if self.next_text[0][1].startswith("S"):
                 self.end_game(False)
             else:
                 self.next_button.configure(state="disabled")
@@ -127,6 +133,7 @@ class Battle(ctk.CTkLabel):
     def end_game(self, player_win):
         if player_win:
             self.next_text = [(f"{self.player.name} defeated Champion {self.opponent.name}", "S-Next"), ("\nYou are the new Pokemon \nLeague Champion!", "End")]
+            print(self.next_text)
             self.next_button.configure(state="normal")
         else:
             self.next_text = [(f"{self.player.name} is out of usable pokemon", "S-Next"), (f"\n{self.player.name} whited out!", "End")]

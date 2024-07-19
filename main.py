@@ -99,6 +99,6 @@ def main():
         opponent.party.append(member)
     
 
-    main_window = Window("Pokemon Battle", (750, 450), player, opponent)
+    main_window = Window("Pokemon Battle", (900, 525), player, opponent)
 
 main()
