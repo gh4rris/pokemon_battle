@@ -133,7 +133,6 @@ class Battle(ctk.CTkLabel):
     def end_game(self, player_win):
         if player_win:
             self.next_text = [(f"{self.player.name} defeated Champion {self.opponent.name}", "S-Next"), ("\nYou are the new Pokemon \nLeague Champion!", "End")]
-            print(self.next_text)
             self.next_button.configure(state="normal")
         else:
             self.next_text = [(f"{self.player.name} is out of usable pokemon", "S-Next"), (f"\n{self.player.name} whited out!", "End")]
